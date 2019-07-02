@@ -16,15 +16,29 @@
   flex-direction: row;
 }
 
+
+.Page{
+  padding-top: 80px;
+  height: calc( 100vh - 80px);
+
+}
+
+
+
+
+
+
 .Navbar h1 {
   color: #fffa;
   padding: 10px 0 10px 20px;
   flex-grow: 5;
+  margin: 0;
 }
 
 .Navbar ul.nav-links {
   list-style: none;
   padding: 13px 0 0 0;
+  margin: 0;
 
   flex-grow: 3;
   display: flex;

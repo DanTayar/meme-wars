@@ -1,0 +1,17 @@
+.Vote .img-box{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+
+}
+
+
+.Vote .img-box .Vote-img{
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	min-height: 300px;
+	min-width:40vw;
+	width: 300px;
+
+}

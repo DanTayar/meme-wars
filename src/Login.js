@@ -1,7 +1,30 @@
 import React from 'react';
 import './Login.css';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
+  state = {
+    username:'',
+    password:'',
+    toVote: false,
+  }
+
+  setUsername = (event)=>
+    this.setState({username:event.target.value})
+
+
+  setPassword = (event)=>
+    this.setState({password:event.target.value})
+
+
+  login = () => {
+    console.log('pretend to check password');
+    this.setState({toVote: true });
+  }
+
+
+
+
   componentDidMount(){
     console.log('Login mount');
   }
@@ -11,9 +34,23 @@ class Login extends React.Component {
   }
 
   render(){
+    if (this.state.toVote) return (<Redirect to='/vote'/>)
     return (
       <div className='Login Page'>
-        Login Coming Soon...
+      <div className='login-box'>
+      <label>
+       <span> Username: </span>
+          <input value={this.state.username}
+                  onChange={this.setUsername}/>
+      </label>
+    <label>
+      <span> password: </span>
+      <input type = 'password' 
+            value={this.state.password}
+            onChange={this.setPassword}/>
+        </label>
+      <button onClick={this.login}>Login</button>
+      </div>
       </div>
     );
   }
