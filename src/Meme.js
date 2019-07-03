@@ -12,6 +12,18 @@ class Meme extends React.Component {
   upload = ()=>{
     console.log('CREATE MEME ', this.state.imgUrl);
     this.setState({ imgUrl: '' })
+
+    fetch('/meme' , {
+      method:'POST',
+      body: JSON.stringify({
+        imgUrl: this.state.imgUrl,
+        author: 1*localStorage.userId,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    }).then(response => {
+      if (response.status < 300) this.setState({ imgUrl : ''});
+      else response.json().then(err => console.error(response.status) );
+    });
   }
 
   componentDidMount(){
