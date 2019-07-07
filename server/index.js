@@ -20,12 +20,44 @@ connection.authenticate()
 
 
 app.get('/hydrate', (req, res)=> {
+	let users = [
+	{name:'nik'}, {name:'avi'} , {name:'dan'} ,
+	];
+
+	let memes = ['http://theawkwardyeti.com/wp-content/uploads/2015/01/0121_Heartwatchesthenews.png',
+      'https://media.discordapp.net/attachments/576550326509764619/589870367968067584/Snapchat-1663181687.jpg?width=725&height=666',
+      'https://cdn.discordapp.com/attachments/576550326509764619/588542078460362753/Snapchat-1743849407.jpg',
+      'https://cdn.discordapp.com/attachments/576550326509764619/587878048087539713/image0.jpg',
+      'https://worldwidefoot.files.wordpress.com/2012/08/crsitianoronaldo-calma-798090.jpg'];
   // sync table
   	User.sync({ force: true })
   	.then(() => Meme.sync({ force: true }))
   	.then(() => Vote.sync({ force: true }))
+  	.then(()=> User.bulkCreate(users , {returning :true}))
+  	.then((userResponse) => {
+  		users = userResponse.map(user => user.dataValues);
+  	})
+  	.then(()=> memes.map((imgUrl ,i) => ({
+  		imgUrl , author : users[i % users.length].id,
+  	})))
+  	.then((memesWithAuthor) => Meme.bulkCreate(memesWithAuthor, {returning: true}))
+  	.then(memesResponse => {
+  		memes = memesResponse.map(meme => meme.dataValues);  	
+  	})
+  	.then(()=> {
+  		let votes = [];
+  		for (let i=0; i<100; i++){
+  			votes.push({
+  				winner: memes[Math.floor(Math.random()*memes.length)].id,
+  				looser: memes[Math.floor(Math.random()*memes.length)].id,
+  				voter: users[i % users.length].id,  			
+  			})
+  		}
+  		return Vote.bulkCreate(votes, {returning: true});
+  	})
+
   	.then(()=> res.json({ message: 'success creating User , Meme , Vote table' }))
-  		.catch(err => res.status(500).json({message: JSON.stringify(err)}))
+  	.catch(err => res.status(500).json({message: JSON.stringify(err)}))
 });
 
 // connect to db

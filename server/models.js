@@ -33,7 +33,7 @@ module.exports = ( connection , ORM) => {
 	 			key: 'id',
 	 		},
 
-	 	},
+	 	},  
 
 	 }, { freezeTableName: true });
 
