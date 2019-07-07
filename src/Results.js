@@ -1,5 +1,5 @@
 import React from 'react';
-import './Login.css';
+import './Results.css';
 
 class Results extends React.Component {
   state = {

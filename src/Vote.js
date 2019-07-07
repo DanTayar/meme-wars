@@ -5,7 +5,7 @@ const offlineImgs = [  'http://theawkwardyeti.com/wp-content/uploads/2015/01/012
       'https://media.discordapp.net/attachments/576550326509764619/589870367968067584/Snapchat-1663181687.jpg?width=725&height=666',
       'https://cdn.discordapp.com/attachments/576550326509764619/588542078460362753/Snapchat-1743849407.jpg',
       'https://cdn.discordapp.com/attachments/576550326509764619/587878048087539713/image0.jpg',
-      'https://images-ext-2.discord'
+      'https://worldwidefoot.files.wordpress.com/2012/08/crsitianoronaldo-calma-798090.jpg'
 ];
 
 class Vote extends React.Component {
