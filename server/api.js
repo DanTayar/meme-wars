@@ -1,9 +1,47 @@
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+
+const auth = require('./auth');
+
 module.exports = (app, { User, Meme, Vote}) =>{
+
+	app.post('/login', (req, res) => {
+		const passwordHash = crypto.pbkdf2Sync(req.body.password, 'secret code', 100, 64,'sha512')
+								   .toString('hex');
+
+		User.findOne({where : {name : req.body.username} })
+			.then(userResponse => {
+				if (userResponse && 
+				(userResponse.dataValues.passwordHash === passwordHash) ){
+					jwt.sign
+					({ userId: userResponse.dataValues.id,
+					username: userResponse.dataValues.name,
+					}, 'jwt secret code',(err, token)=>{
+					    res.json({token: token});
+					});
+
+				}else{
+				res.status(401).json({message: 'login failed'});
+				}
+			})
+
+
+	});
+
 	app.post('/User', (req, res)=> {
-	User.create(req.body)
-		.then((response) =>{ console.log(response);
-							res.json({message: 'user created',
-									userId: response.dataValues.id })
+
+const passwordHash = crypto.pbkdf2Sync(req.body.password, 'secret code', 100, 64,'sha512')
+								   .toString('hex');
+
+		User.create({name: req.body.username , passwordHash })
+			.then((userResponse) => {
+ 
+			jwt.sign({
+				userId: userResponse.dataValues.id,
+				username: userResponse.dataValues.name,
+					}, 'jwt secret code',(err, token)=>{
+					    res.json({token});
+					});
 		})
 		.catch(err => {
 			console.error(err);
@@ -17,8 +55,11 @@ app.get('/User/:id', (req, res)=> {
 
 });
 
-app.post('/meme', (req, res)=> {
-	Meme.create(req.body)
+app.post('/meme', auth ,(req, res)=> {
+	Meme.create({
+		imgUrl: req.body.imgUrl,
+		author: req.session.userId
+	})
 		.then(() => res.json({message: 'meme created' })) 
 		.catch(err => {
 			console.error(err);
@@ -41,8 +82,12 @@ app.get('/meme', (req , res) => {
 
 });
 
-app.post('/vote', (req, res)=> {
-	Vote.create(req.body)
+app.post('/vote',auth, (req, res)=> {
+	Vote.create({
+		winner: req.body.winner,
+		looser: req.body.looser,
+		voter: req.session.userId
+	})
 		.then(() => res.json({message: 'vote created' })) 
 		.catch(err => {
 			console.error(err);

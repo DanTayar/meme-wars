@@ -10,6 +10,11 @@ module.exports = ( connection , ORM) => {
 	 		allowNull: false,
 	 	},
 
+	 	passwordHash: {
+	 		type:ORM.TEXT,
+	 		allowNull:false,
+	 	}
+
 	 } ,  { freezeTableName: true });
 
 
