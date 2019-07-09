@@ -15,11 +15,12 @@ class Meme extends React.Component {
 
     fetch('/meme' , {
       method:'POST',
+      headers: {'Content-Type': 'application/json',
+      Authorization : 'Bearer ' + localStorage.sessionToken , 
+    },
       body: JSON.stringify({
         imgUrl: this.state.imgUrl,
-        author: 1*localStorage.userId,
       }),
-      headers: {'Content-Type': 'application/json'},
     }).then(response => {
       if (response.status < 300) this.setState({ imgUrl : ''});
       else response.json().then(err => console.error(response.status) );

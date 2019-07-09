@@ -69,6 +69,17 @@ module.exports = ( connection , ORM) => {
 
 	 	},
 
+	 	voter: {
+	 		type:ORM.INTEGER,
+	 		allowNull: false,
+	 		references :{
+	 			model: 'user',
+	 			key: 'id',
+	 		},
+
+	 	},
+
+
 	 }, { freezeTableName: true });
 
 
